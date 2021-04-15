@@ -12,21 +12,21 @@ class AlbumAdmin(ImportExportModelAdmin):
 
 
 def in_progress(modeladmin, request, queryset):
-    queryset.update(status='В процессе')
+    queryset.update(status='in_progress')
 
 
 in_progress.short_description = "Изменить статус заказа 'В процессе'"
 
 
 def completed(modeladmin, request, queryset):
-    queryset.update(status='Выполнен')
+    queryset.update(status='completed')
 
 
 completed.short_description = "Изменить статус заказа 'Выполнен'"
 
 
 def canceled(modeladmin, request, queryset):
-    queryset.update(status='Отменен')
+    queryset.update(status='canceled')
 
 
 canceled.short_description = "Изменить статус заказа 'Отменен'"
