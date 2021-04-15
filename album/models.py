@@ -1,46 +1,124 @@
 from django.db import models
 
-class Size(models.Model):
-    size = models.CharField(max_length=10, db_index=True)
-    def __str__(self):
-        return self.size
 
-class Cover(models.Model):
-    cover = models.CharField(max_length=40, db_index=True)
-    def __str__(self):
-        return self.cover
-
-class Pattern(models.Model):
-    pattern = models.CharField(max_length=40, db_index=True)
-    def __str__(self):
-        return self.pattern
-
+# Модель альбомов
 class Album(models.Model):
     title = models.CharField(max_length=100, db_index=True)
-    size = models.ForeignKey('Size', null=True, on_delete= models.PROTECT)
-    cover = models.ForeignKey('Cover', null=True, on_delete= models.PROTECT)
-    pages = models.IntegerField()
-    pattern = models.ForeignKey('Pattern', null=True, on_delete= models.PROTECT)
+    theme = models.ForeignKey('Theme', on_delete=models.PROTECT)
+    cover = models.ForeignKey('Cover', on_delete=models.PROTECT)
+    paper = models.ForeignKey('Paper', on_delete=models.PROTECT)
     description = models.TextField(blank=True)
+
     def __str__(self):
         return self.title
 
+
+# Модель размеров
+class Size(models.Model):
+    TYPES = [
+        ('horizontal', 'Горизонтальный'),
+        ('vertical', 'Вертикальный'),
+        ('square', 'Квадрат'),
+    ]
+    id = models.AutoField(primary_key=True)
+    size = models.CharField(max_length=15)
+    type = models.CharField(
+        max_length=20,
+        choices=TYPES,
+        default='vertical',
+    )
+
+    def __str__(self):
+        return f"{self.size} - {self.type}"
+
+
+# Модель тематик
+class Theme(models.Model):
+    theme = models.CharField(max_length=100, db_index=True, default='Праздник')
+    description = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.theme
+
+
+# Модель обложек
+class Cover(models.Model):
+    id = models.AutoField(primary_key=True)
+    cover = models.CharField(max_length=40)
+
+    def __str__(self):
+        return self.cover
+
+
+# Модель типа бумаги
+class Paper(models.Model):
+    paper = models.CharField(max_length=40, db_index=True)
+
+    def __str__(self):
+        return self.paper
+
+
+# Модель упаковок
+class Package(models.Model):
+    package = models.CharField(max_length=40, db_index=True)
+
+    def __str__(self):
+        return self.package
+
+
+# Модель пользователей
 class Buyer(models.Model):
     name = models.CharField(max_length=50)
     surname = models.CharField(max_length=50)
     number = models.CharField(max_length=12)
 
     def __str__(self):
-        return self.name
+        return f"{self.surname} {self.name}"
 
 
+# Модель заказов
 class Order(models.Model):
-    number = models.CharField(max_length=10)
-    album = models.ForeignKey('Album', on_delete= models.PROTECT)
-    buyer = models.ForeignKey('Buyer', on_delete= models.PROTECT)
+    STATUS = [
+        ('in_progress', 'В процессе'),
+        ('completed', 'Выполнен'),
+        ('canceled', 'Отменен'),
+    ]
+    id = models.AutoField(primary_key=True)
+    album = models.ForeignKey('Album', on_delete=models.PROTECT)
+    size = models.ForeignKey('Size', on_delete=models.PROTECT)
+    package = models.ForeignKey('Package', on_delete=models.PROTECT, null=True, default=5)
+    user = models.ForeignKey('Buyer', on_delete=models.CASCADE)
     date = models.DateTimeField()
     price = models.IntegerField()
-    status = models.CharField(max_length=15)
+    description = models.TextField(blank=True, null=True)
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS,
+        default='in_progress',
+    )
 
     def __str__(self):
-        return self.number
+        return f'{self.id}'
+
+
+# Модель отзывов
+class Review(models.Model):
+    id = models.AutoField(primary_key=True)
+    order = models.ForeignKey('Order', on_delete=models.CASCADE)
+    date = models.DateTimeField()
+    text = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.id
+
+
+# Модель сообщений
+class Message(models.Model):
+    id = models.AutoField(primary_key=True)
+    album = models.ForeignKey('Album', on_delete=models.CASCADE)
+    user = models.ForeignKey('Buyer', null=True, on_delete=models.SET_NULL)
+    date = models.DateTimeField()
+    text = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.id

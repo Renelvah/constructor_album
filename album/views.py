@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from .serializer import AlbumSerializer, OrderSerializer, BuyerSerializer, SizeSerializer, CoverSerializer, PatternSerializer
-from .models import Album, Order, Buyer, Cover, Pattern, Size
+from .serializer import *
+from .models import *
 
 
 class AlbumViewset(viewsets.ModelViewSet):
@@ -24,8 +24,9 @@ class BuyerViewset(viewsets.ModelViewSet):
     serializer_class = BuyerSerializer
 
     def get_queryset(self):
-        buyer = Buyer.objects.all()
-        return buyer
+        user = Buyer.objects.all()
+        return user
+
 
 class CoverViewset(viewsets.ModelViewSet):
     serializer_class = CoverSerializer
@@ -34,13 +35,6 @@ class CoverViewset(viewsets.ModelViewSet):
         cover = Cover.objects.all()
         return cover
 
-class PatternViewset(viewsets.ModelViewSet):
-    serializer_class = PatternSerializer
-
-    def get_queryset(self):
-        pattern = Pattern.objects.all()
-        return pattern
-
 
 class SizeViewset(viewsets.ModelViewSet):
     serializer_class = SizeSerializer
@@ -48,3 +42,43 @@ class SizeViewset(viewsets.ModelViewSet):
     def get_queryset(self):
         size = Size.objects.all()
         return size
+
+
+class PaperViewset(viewsets.ModelViewSet):
+    serializer_class = PaperSerializer
+
+    def get_queryset(self):
+        paper = Paper.objects.all()
+        return paper
+
+
+class PackageViewset(viewsets.ModelViewSet):
+    serializer_class = PackageSerializer
+
+    def get_queryset(self):
+        package = Package.objects.all()
+        return package
+
+
+class ThemeViewset(viewsets.ModelViewSet):
+    serializer_class = ThemeSerializer
+
+    def get_queryset(self):
+        theme = Theme.objects.all()
+        return theme
+
+
+class MessageViewset(viewsets.ModelViewSet):
+    serializer_class = MessageSerializer
+
+    def get_queryset(self):
+        message = Message.objects.all()
+        return message
+
+
+class ReviewViewset(viewsets.ModelViewSet):
+    serializer_class = ReviewSerializer
+
+    def get_queryset(self):
+        review = Review.objects.all()
+        return review

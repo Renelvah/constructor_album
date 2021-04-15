@@ -1,43 +1,62 @@
-from .models import Album, Order, Buyer, Cover, Pattern, Size
+from .models import *
 from rest_framework import serializers
 
-class AlbumSerializer(serializers.ModelSerializer):
 
+class AlbumSerializer(serializers.ModelSerializer):
     class Meta:
         model = Album
-        fields = ['id','title', 'size', 'cover', 'pages', 'pattern', 'description']
+        fields = ['id', 'title', 'theme', 'cover', 'paper', 'description']
+
+
+class ThemeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Theme
+        fields = ['id', 'theme', 'description']
+
+
+class SizeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Size
+        fields = ['id', 'size', 'pages']
+
+
+class CoverSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cover
+        fields = ['id', 'cover', 'color']
+
+
+class PaperSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Paper
+        fields = ['id', 'paper']
+
+
+class PackageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Package
+        fields = ['id', 'package']
 
 
 class OrderSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Order
-        fields = ['id', 'number', 'price', 'album', 'buyer', 'date', 'status']
+        fields = ['id', 'album', 'size', 'package', 'user', 'date', 'price', 'description', 'status']
 
 
 class BuyerSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Buyer
         fields = ['id', 'name', 'surname', 'number']
 
 
-class PatternSerializer(serializers.ModelSerializer):
-
+class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Pattern
-        fields = ['id', 'pattern']
+        model = Review
+        fields = ['id', 'order', 'date', 'text']
 
 
-class SizeSerializer(serializers.ModelSerializer):
-
+class MessageSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Size
-        fields = ['id', 'size']
-
-
-class CoverSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Cover
-        fields = ['id', 'cover']
+        model = Message
+        fields = ['id', 'album', 'user', 'date', 'text']

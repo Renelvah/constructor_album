@@ -25,7 +25,7 @@ SECRET_KEY = 'ug_=i+=p_ie)*@ukc3!f&!c3b(8*ag#*#(10kxx=9=gx9d30g4'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['constructoralbum.std-692.ist.mospolytech.ru']
+ALLOWED_HOSTS = ['constructoralbum.std-692.ist.mospolytech.ru', '127.0.0.1']
 
 
 # Application definition
